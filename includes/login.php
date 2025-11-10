@@ -3,84 +3,45 @@ session_start();
 include 'conexion.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $role = $_POST['role'];
+    $nombre_usuario = $_POST['nombre_usuario'];
+    $contrasena = $_POST['contrasena'];
 
-    if ($role == 'admin') {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+    $sql = "SELECT * FROM administradores WHERE nombre_usuario = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $nombre_usuario);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        $sql = "SELECT * FROM administradores WHERE username = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
 
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            if (password_verify($password, $row['password'])) {
-                $_SESSION['loggedin'] = true;
-                $_SESSION['role'] = 'admin';
-                $_SESSION['username'] = $username;
-                header("location: ../admin/dashboard.php");
-            } else {
-                echo "Contraseña incorrecta.";
-            }
-        } else {
-            echo "No se encontró el usuario.";
-        }
-        $stmt->close();
+        // Note: For a real application, you should use password_verify().
+        // For this example, we are comparing plain text.
+        // if (password_verify($contrasena, $user['contrasena'])) {
+        if ($contrasena == $user['contrasena']) {
+            $_SESSION['loggedin'] = true;
+            $_SESSION['id_usuario'] = $user['id_usuario'];
+            $_SESSION['nombre_usuario'] = $user['nombre_usuario'];
 
-    } elseif ($role == 'student') {
-        $id_alumno = $_POST['id_alumno'];
-        $password = $_POST['password'];
-
-        $sql = "SELECT * FROM alumnos WHERE id_alumno = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $id_alumno);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            if (password_verify($password, $row['password'])) {
-                $_SESSION['loggedin'] = true;
+            if (!empty($user['id_alumno'])) {
                 $_SESSION['role'] = 'student';
-                $_SESSION['id_alumno'] = $id_alumno;
+                $_SESSION['id_alumno'] = $user['id_alumno'];
                 header("location: ../student/dashboard.php");
-            } else {
-                echo "Contraseña incorrecta.";
-            }
-        } else {
-            echo "No se encontró el alumno.";
-        }
-        $stmt->close();
-
-    } elseif ($role == 'company') {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-
-        $sql = "SELECT * FROM empresas WHERE username = ? AND status = 'aprobado'";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            if (password_verify($password, $row['password'])) {
-                $_SESSION['loggedin'] = true;
+            } elseif (!empty($user['id_empresa'])) {
                 $_SESSION['role'] = 'company';
-                $_SESSION['username'] = $username;
+                $_SESSION['id_empresa'] = $user['id_empresa'];
                 header("location: ../company/dashboard.php");
             } else {
-                echo "Contraseña incorrecta.";
+                $_SESSION['role'] = 'admin';
+                header("location: ../admin/dashboard.php");
             }
         } else {
-            echo "No se encontró la empresa o la solicitud no ha sido aprobada.";
+            echo "Contraseña incorrecta.";
         }
-        $stmt->close();
+    } else {
+        echo "No se encontró el usuario.";
     }
+    $stmt->close();
 }
-
 $conn->close();
 ?>

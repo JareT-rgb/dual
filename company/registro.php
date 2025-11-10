@@ -3,15 +3,19 @@ include '../includes/conexion.php';
 $message = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $nombre_empresa = $_POST['nombre_empresa'];
-    $info_empresa = $_POST['info_empresa'];
+    $razon_social = $_POST['razon_social'];
+    $rfc = $_POST['rfc'];
+    $giro_empresa = $_POST['giro_empresa'];
+    $direccion = $_POST['direccion'];
+    $dato_contacto = $_POST['dato_contacto'];
+    $telefono_contacto = $_POST['telefono_contacto'];
+    $telefono_empresa = $_POST['telefono_empresa'];
+    $perfil_alumno = $_POST['perfil_alumno'];
 
-    $sql = "INSERT INTO empresas (username, password, nombre_empresa, info_empresa) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO empresas (razon_social, rfc, giro_empresa, direccion, dato_contacto, telefono_contacto, telefono_empresa, perfil_alumno) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $username, $password, $nombre_empresa, $info_empresa);
+    $stmt->bind_param("ssssssss", $razon_social, $rfc, $giro_empresa, $direccion, $dato_contacto, $telefono_contacto, $telefono_empresa, $perfil_alumno);
     
     if ($stmt->execute()) {
         $message = "Solicitud enviada exitosamente. Espere la aprobación del administrador.";
@@ -39,20 +43,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
         <form action="registro.php" method="POST">
             <div class="input-group">
-                <label for="username">Usuario</label>
-                <input type="text" id="username" name="username" required>
+                <label for="razon_social">Razón Social</label>
+                <input type="text" id="razon_social" name="razon_social" required>
             </div>
             <div class="input-group">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" required>
+                <label for="rfc">RFC</label>
+                <input type="text" id="rfc" name="rfc" required>
             </div>
             <div class="input-group">
-                <label for="nombre_empresa">Nombre de la Empresa</label>
-                <input type="text" id="nombre_empresa" name="nombre_empresa" required>
+                <label for="giro_empresa">Giro de la Empresa</label>
+                <input type="text" id="giro_empresa" name="giro_empresa">
             </div>
             <div class="input-group">
-                <label for="info_empresa">Información de la Empresa</label>
-                <textarea id="info_empresa" name="info_empresa" rows="4" required></textarea>
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" name="direccion">
+            </div>
+            <div class="input-group">
+                <label for="dato_contacto">Dato de Contacto</label>
+                <input type="text" id="dato_contacto" name="dato_contacto">
+            </div>
+            <div class="input-group">
+                <label for="telefono_contacto">Teléfono de Contacto</label>
+                <input type="text" id="telefono_contacto" name="telefono_contacto">
+            </div>
+            <div class="input-group">
+                <label for="telefono_empresa">Teléfono de la Empresa</label>
+                <input type="text" id="telefono_empresa" name="telefono_empresa">
+            </div>
+            <div class="input-group">
+                <label for="perfil_alumno">Perfil del Alumno Buscado</label>
+                <textarea id="perfil_alumno" name="perfil_alumno" rows="4"></textarea>
             </div>
             <button type="submit">Enviar Solicitud</button>
         </form>

@@ -6,7 +6,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['role'] != 'admin') {
 }
 include '../includes/conexion.php';
 
-$sql = "SELECT id_alumno, nombre, ap_paterno, ap_materno, carrera, semestre, empresa_seleccionada, puesto, fecha_inicio, fecha_salida FROM alumnos";
+$sql = "SELECT id_registro, id_alumno, nombre, ap_paterno, ap_materno, carrera, semestre, empresa_seleccionada, puesto, fecha_inicio, fecha_salida FROM registro_alumnos";
 $result = $conn->query($sql);
 ?>
 
@@ -39,6 +39,7 @@ $result = $conn->query($sql);
         <br><br>
         <table>
             <tr>
+                <th>ID Registro</th>
                 <th>ID Alumno</th>
                 <th>Nombre</th>
                 <th>Ap. Paterno</th>
@@ -54,6 +55,7 @@ $result = $conn->query($sql);
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
                     echo "<tr>";
+                    echo "<td>" . $row["id_registro"] . "</td>";
                     echo "<td>" . $row["id_alumno"] . "</td>";
                     echo "<td>" . $row["nombre"] . "</td>";
                     echo "<td>" . $row["ap_paterno"] . "</td>";
@@ -67,7 +69,7 @@ $result = $conn->query($sql);
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='10'>No hay alumnos registrados.</td></tr>";
+                echo "<tr><td colspan='11'>No hay alumnos registrados.</td></tr>";
             }
             $conn->close();
             ?>

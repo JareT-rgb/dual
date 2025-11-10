@@ -6,18 +6,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['role'] != 'admin') {
 }
 include '../includes/conexion.php';
 
-// Handle status updates
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id']) && isset($_POST['status'])) {
-    $id = $_POST['id'];
-    $status = $_POST['status'];
-    $update_sql = "UPDATE empresas SET status = ? WHERE id = ?";
-    $stmt = $conn->prepare($update_sql);
-    $stmt->bind_param("si", $status, $id);
-    $stmt->execute();
-    $stmt->close();
-}
-
-$sql = "SELECT id, username, nombre_empresa, info_empresa, status FROM empresas";
+$sql = "SELECT id_empresa, razon_social, rfc, giro_empresa, direccion, dato_contacto, telefono_contacto, telefono_empresa, perfil_alumno FROM empresas";
 $result = $conn->query($sql);
 ?>
 
@@ -50,36 +39,33 @@ $result = $conn->query($sql);
         <br><br>
         <table>
             <tr>
-                <th>ID</th>
-                <th>Usuario</th>
-                <th>Nombre Empresa</th>
-                <th>Información</th>
-                <th>Estado</th>
-                <th>Acciones</th>
+                <th>ID Empresa</th>
+                <th>Razón Social</th>
+                <th>RFC</th>
+                <th>Giro</th>
+                <th>Dirección</th>
+                <th>Contacto</th>
+                <th>Tel. Contacto</th>
+                <th>Tel. Empresa</th>
+                <th>Perfil Alumno</th>
             </tr>
             <?php
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
                     echo "<tr>";
-                    echo "<td>" . $row["id"] . "</td>";
-                    echo "<td>" . $row["username"] . "</td>";
-                    echo "<td>" . $row["nombre_empresa"] . "</td>";
-                    echo "<td>" . $row["info_empresa"] . "</td>";
-                    echo "<td>" . $row["status"] . "</td>";
-                    echo "<td>
-                            <form action='solicitudes_empresas.php' method='POST' style='display:inline;'>
-                                <input type='hidden' name='id' value='" . $row["id"] . "'>
-                                <select name='status' onchange='this.form.submit()'>
-                                    <option value='pendiente' " . ($row["status"] == 'pendiente' ? 'selected' : '') . ">Pendiente</option>
-                                    <option value='aprobado' " . ($row["status"] == 'aprobado' ? 'selected' : '') . ">Aprobado</option>
-                                    <option value='rechazado' " . ($row["status"] == 'rechazado' ? 'selected' : '') . ">Rechazado</option>
-                                </select>
-                            </form>
-                          </td>";
+                    echo "<td>" . $row["id_empresa"] . "</td>";
+                    echo "<td>" . $row["razon_social"] . "</td>";
+                    echo "<td>" . $row["rfc"] . "</td>";
+                    echo "<td>" . $row["giro_empresa"] . "</td>";
+                    echo "<td>" . $row["direccion"] . "</td>";
+                    echo "<td>" . $row["dato_contacto"] . "</td>";
+                    echo "<td>" . $row["telefono_contacto"] . "</td>";
+                    echo "<td>" . $row["telefono_empresa"] . "</td>";
+                    echo "<td>" . $row["perfil_alumno"] . "</td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='6'>No hay solicitudes de empresas.</td></tr>";
+                echo "<tr><td colspan='9'>No hay empresas registradas.</td></tr>";
             }
             $conn->close();
             ?>

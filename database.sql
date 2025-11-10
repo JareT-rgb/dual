@@ -47,6 +47,9 @@ CREATE TABLE administradores (
     FOREIGN KEY (id_alumno) REFERENCES alumnos(id_alumno)
 );
 
+-- Insert default administrator
+INSERT INTO administradores (nombre_usuario, contrasena) VALUES ('admin_01', 'admin123');
+
 -- Tabla de Registro de Alumnos en Empresas
 CREATE TABLE registro_alumnos (
     id_registro INT PRIMARY KEY AUTO_INCREMENT,
