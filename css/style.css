@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #71b7e6, #9b59b6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container, .dashboard-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 360px;
+    backdrop-filter: blur(5px);
+}
+
+.dashboard-container {
+    width: 80%;
+    max-width: 900px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-header h2 {
+    margin: 0;
+    color: #333;
+    font-weight: 600;
+}
+
+.role-selector {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    border-bottom: 2px solid #eee;
+}
+
+.role-btn {
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #999;
+    outline: none;
+}
+
+.role-btn.active {
+    color: #5e35b1;
+    border-bottom: 2px solid #5e35b1;
+    font-weight: 600;
+}
+
+.login-panel {
+    display: none;
+}
+
+.login-panel.active {
+    display: block;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.input-group input, .input-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #71b7e6, #9b59b6);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(-135deg, #71b7e6, #9b59b6);
+}
+
+.company-register {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.company-register a, .student-register a {
+    color: #5e35b1;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.company-register a:hover, .student-register a:hover {
+    text-decoration: underline;
+}
