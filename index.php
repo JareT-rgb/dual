@@ -14,6 +14,13 @@
 
         <div class="login-panel active">
             <h3>Inicio de Sesión</h3>
+            <?php
+            session_start();
+            if (isset($_SESSION['login_error'])) {
+                echo '<p style="color:red;">' . $_SESSION['login_error'] . '</p>';
+                unset($_SESSION['login_error']);
+            }
+            ?>
             <form action="includes/login.php" method="POST">
                 <div class="input-group">
                     <label for="nombre_usuario">Usuario</label>

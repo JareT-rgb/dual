@@ -1,11 +1,4 @@
-CREATE DATABASE IF NOT EXISTS dualdb;
-USE dualdb;
 
-
-DROP TABLE IF EXISTS administradores;
-DROP TABLE IF EXISTS registro_alumnos;
-DROP TABLE IF EXISTS alumnos;
-DROP TABLE IF EXISTS empresas;
 
 CREATE TABLE empresas (
     id_empresa INT PRIMARY KEY AUTO_INCREMENT,

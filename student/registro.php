@@ -14,18 +14,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $carrera = $_POST['carrera'];
     $semestre = $_POST['semestre'];
     $turno = $_POST['turno'];
+    $contrasena = $_POST['contrasena'];
+    $confirm_contrasena = $_POST['confirm_contrasena'];
 
-    $sql = "INSERT INTO alumnos (nombre, ap_paterno, ap_materno, correo, telefono, rfc, direccion, N_control, carrera, semestre, turno) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssssssis", $nombre, $ap_paterno, $ap_materno, $correo, $telefono, $rfc, $direccion, $N_control, $carrera, $semestre, $turno);
-    
-    if ($stmt->execute()) {
-        $message = "Registro exitoso. Ahora puedes iniciar sesión.";
+    if ($contrasena !== $confirm_contrasena) {
+        $message = "Las contraseñas no coinciden.";
     } else {
-        $message = "Error en el registro: " . $conn->error;
+        $hashed_password = password_hash($contrasena, PASSWORD_DEFAULT);
+
+        $sql = "INSERT INTO alumnos (nombre, ap_paterno, ap_materno, correo, telefono, rfc, direccion, N_control, carrera, semestre, turno, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssssssssiss", $nombre, $ap_paterno, $ap_materno, $correo, $telefono, $rfc, $direccion, $N_control, $carrera, $semestre, $turno, $hashed_password);
+        
+        if ($stmt->execute()) {
+            $message = "Registro exitoso. Ahora puedes iniciar sesión.";
+        } else {
+            $message = "Error en el registro: " . $stmt->error;
+        }
+        $stmt->close();
     }
-    $stmt->close();
     $conn->close();
 }
 ?>
@@ -88,6 +96,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="input-group">
                 <label for="turno">Turno</label>
                 <input type="text" id="turno" name="turno">
+            </div>
+            <div class="input-group">
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" required>
+            </div>
+            <div class="input-group">
+                <label for="confirm_contrasena">Confirmar Contraseña</label>
+                <input type="password" id="confirm_contrasena" name="confirm_contrasena" required>
             </div>
             <button type="submit">Registrarse</button>
         </form>

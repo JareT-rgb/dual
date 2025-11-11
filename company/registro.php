@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt->execute()) {
         $message = "Solicitud enviada exitosamente. Espere la aprobación del administrador.";
     } else {
-        $message = "Error al enviar la solicitud: " . $conn->error;
+        $message = "Error al enviar la solicitud: " . $stmt->error;
     }
     $stmt->close();
     $conn->close();

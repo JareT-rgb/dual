@@ -6,10 +6,10 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['role'] != 'company') {
 }
 include '../includes/conexion.php';
 
-$username = $_SESSION['username'];
-$sql = "SELECT * FROM empresas WHERE username = ?";
+$id_empresa = $_SESSION['id_empresa'];
+$sql = "SELECT * FROM empresas WHERE id_empresa = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $username);
+$stmt->bind_param("s", $id_empresa);
 $stmt->execute();
 $result = $stmt->get_result();
 $company = $result->fetch_assoc();

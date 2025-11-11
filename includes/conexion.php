@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dual_db";
+$servername = "sql300.infinityfree.com";
+$username = "if0_40386948";
+$password = "jaretjaja777";
+$dbname = "if0_40386948_dualdb";
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
